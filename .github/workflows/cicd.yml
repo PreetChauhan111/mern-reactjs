@@ -20,7 +20,15 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker image
-      run: docker build -t preetchauhan/reactjs-mern:latest --build-arg REACT_APP_NODE_ENV='production' --build-arg REACT_APP_SERVER_BASE_URL='${{ secrets.REACT_APP_SERVER_BASE_URL }}' .
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: preetchauhan/reactjs-mern:latest
+        build-args: |
+          REACT_APP_NODE_ENV=production
+          REACT_APP_SERVER_BASE_URL=${{ secrets.REACT_APP_SERVER_BASE_URL }}
+
 
     - name: Push Docker image
       run: docker push preetchauhan/reactjs-mern:latest
